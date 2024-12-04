@@ -16,6 +16,7 @@ $ del app.exe; go build ./cmd/app; ./app.exe;
 ```
 
 ## Test
-
+```
 $ Install Rest Client Extension in VScode 
 $ use the sample.http file 
+```
