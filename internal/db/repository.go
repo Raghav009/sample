@@ -6,7 +6,7 @@ import (
 )
 
 func GetPreferences(db *sql.DB) ([]models.Preferences, error) {
-	query := "SELECT UserId, PageName, ViewPreferences FROM CS.UserViewPreferences"
+	query := "SELECT * FROM users"
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
