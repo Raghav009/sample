@@ -1,0 +1,20 @@
+### Rest Client Extension ###
+
+@baseUrl = http://localhost:8080
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoidXNlciIsImlzcyI6InNhbXBsZSIsImV4cCI6MTczMzM0NzEzMH0.t09JG07FoLPA2jMrk8DOI92Y7VnSzpSRS4M2hazuH7s
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "password"
+}
+
+###
+
+GET {{baseUrl}}/preferences
+Authorization: Bearer {{token}}
+
+###
+
+
