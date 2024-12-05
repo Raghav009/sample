@@ -9,6 +9,8 @@ import (
 	"sample/internal/db"
 	"sample/internal/handlers"
 	"sample/internal/middleware"
+
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -26,22 +28,22 @@ func main() {
 	defer dbConn.Close()
 
 	fmt.Println("Connected to the database!")
-	http.Handle("/", middleware.CORS(http.DefaultServeMux))
+	mux := http.NewServeMux()
 	// Define HTTP routes
-	http.HandleFunc("/ping", handlers.PingHandler)
-	http.HandleFunc("/users", middleware.JWTMiddleware(func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/ping", handlers.PingHandler)
+	mux.HandleFunc("/users", middleware.JWTMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		handlers.GetUsersHandler(w, r, dbConn)
 	}))
-	http.HandleFunc("/login", (func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/login", (func(w http.ResponseWriter, r *http.Request) {
 		handlers.LoginHandler(w, r, dbConn)
 	}))
-	http.HandleFunc("/register", (func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/register", (func(w http.ResponseWriter, r *http.Request) {
 		handlers.AddUserHandler(w, r, dbConn)
 	}))
-
+	handler := cors.Default().Handler(mux)
 	// Start the HTTP server
 	log.Printf("Starting server on %s...\n", cfg.ServerAddress)
-	if err := http.ListenAndServe(cfg.ServerAddress, nil); err != nil {
+	if err := http.ListenAndServe(cfg.ServerAddress, handler); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

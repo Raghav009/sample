@@ -29,7 +29,8 @@ func LoadConfig() (*Config, error) {
 }
 
 func LoadSecret() (string, error) {
-	err := godotenv.Load()
+	path := "D:\\Training\\sample\\.env"
+	err := godotenv.Load(path)
 	if err != nil {
 		return "", err
 	}
