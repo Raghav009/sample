@@ -6,7 +6,7 @@ import (
 )
 
 func GetUsers(db *sql.DB) ([]models.User, error) {
-	query := "SELECT [Id],[UserName],[Password],[CreatedDate],[IsAdmin] FROM [dbo].[Users]"
+	query := "SELECT [Id],[UserName],[CreatedDate],[IsAdmin] FROM [dbo].[Users]"
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -16,7 +16,7 @@ func GetUsers(db *sql.DB) ([]models.User, error) {
 	var users []models.User
 	for rows.Next() {
 		var user models.User
-		if err := rows.Scan(&user.UserId, &user.UserName, &user.Password, &user.CreatedDate, &user.IsAdmin); err != nil {
+		if err := rows.Scan(&user.UserId, &user.UserName, &user.CreatedDate, &user.IsAdmin); err != nil {
 			return nil, err
 		}
 		users = append(users, user)
