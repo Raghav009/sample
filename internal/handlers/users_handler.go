@@ -27,7 +27,6 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request, dbConn *sql.DB) {
 		http.Error(w, "Error retrieving users"+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	//utils.enableCors(w)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(users)
 }

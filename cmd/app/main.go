@@ -26,7 +26,7 @@ func main() {
 	defer dbConn.Close()
 
 	fmt.Println("Connected to the database!")
-
+	http.Handle("/", middleware.CORS(http.DefaultServeMux))
 	// Define HTTP routes
 	http.HandleFunc("/ping", handlers.PingHandler)
 	http.HandleFunc("/users", middleware.JWTMiddleware(func(w http.ResponseWriter, r *http.Request) {
@@ -38,6 +38,7 @@ func main() {
 	http.HandleFunc("/register", (func(w http.ResponseWriter, r *http.Request) {
 		handlers.AddUserHandler(w, r, dbConn)
 	}))
+
 	// Start the HTTP server
 	log.Printf("Starting server on %s...\n", cfg.ServerAddress)
 	if err := http.ListenAndServe(cfg.ServerAddress, nil); err != nil {

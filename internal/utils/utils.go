@@ -39,13 +39,6 @@ func GetTokenFromRequest(r *http.Request) string {
 	return ""
 }
 
-func enableCors(w http.ResponseWriter) {
-	(w).Header().Set("Access-Control-Allow-Origin", "*")
-	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-	(w).Header().Set("Access-Control-Allow-Headers", "*")
-	(w).Header().Set("Access-Control-Max-Age", "86400")
-}
-
 func BoolToByte(b bool) byte {
 	return map[bool]byte{true: 1, false: 0}[b]
 }
