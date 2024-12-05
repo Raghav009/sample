@@ -40,7 +40,20 @@ func main() {
 	mux.HandleFunc("/register", (func(w http.ResponseWriter, r *http.Request) {
 		handlers.AddUserHandler(w, r, dbConn)
 	}))
-	handler := cors.Default().Handler(mux)
+	cors := cors.New(cors.Options{
+		AllowedOrigins: []string{
+			"http://localhost:4200/",
+			"*",
+		},
+		AllowedMethods: []string{
+			http.MethodPost,
+			http.MethodGet,
+			http.MethodOptions,
+		},
+		AllowedHeaders:   []string{"Content-Type", "Authorization", "*"},
+		AllowCredentials: true,
+	})
+	handler := cors.Handler(mux)
 	// Start the HTTP server
 	log.Printf("Starting server on %s...\n", cfg.ServerAddress)
 	if err := http.ListenAndServe(cfg.ServerAddress, handler); err != nil {
