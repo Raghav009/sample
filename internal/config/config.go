@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -13,11 +12,12 @@ type Config struct {
 }
 
 func LoadConfig() (*Config, error) {
-	curDir, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	err = godotenv.Load(curDir + "/.env")
+	// curDir, err := os.Getwd()
+	// if err != nil {
+	// 	log.Println(err)
+	// }
+	path := "D:\\Training\\sample\\.env" // curDir + "/.env" //
+	err := godotenv.Load(path)
 	if err != nil {
 		return nil, err
 	}

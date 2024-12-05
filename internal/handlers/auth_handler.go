@@ -1,12 +1,16 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"sample/internal/auth"
+	"sample/internal/db"
+	"sample/internal/utils"
 )
 
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
+func LoginHandler(w http.ResponseWriter, r *http.Request, dbConn *sql.DB) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -26,7 +30,18 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// In a real-world app, you should validate the credentials against a database.
 	// Here, we hard-code the username and password check for simplicity.
-	if credentials.Username == "user" && credentials.Password == "password" {
+
+	user, err := db.GetUser(credentials.Username, dbConn)
+	if err != nil {
+		http.Error(w, "Error retrieving User", http.StatusInternalServerError)
+		return
+	}
+	if user == nil {
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("user not available"))
+		return
+	}
+	err = auth.ComparePassword(credentials.Password, user.Password)
+	if err == nil {
 		// Generate JWT token for the user
 		token, err := auth.GenerateJWT(credentials.Username, "user")
 		if err != nil {

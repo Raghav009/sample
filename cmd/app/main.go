@@ -29,11 +29,15 @@ func main() {
 
 	// Define HTTP routes
 	http.HandleFunc("/ping", handlers.PingHandler)
-	http.HandleFunc("/preferences", middleware.JWTMiddleware(func(w http.ResponseWriter, r *http.Request) {
-		handlers.GetPreferencesHandler(w, r, dbConn)
+	http.HandleFunc("/users", middleware.JWTMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		handlers.GetUsersHandler(w, r, dbConn)
 	}))
-	http.HandleFunc("/login", handlers.LoginHandler)
-
+	http.HandleFunc("/login", (func(w http.ResponseWriter, r *http.Request) {
+		handlers.LoginHandler(w, r, dbConn)
+	}))
+	http.HandleFunc("/register", (func(w http.ResponseWriter, r *http.Request) {
+		handlers.AddUserHandler(w, r, dbConn)
+	}))
 	// Start the HTTP server
 	log.Printf("Starting server on %s...\n", cfg.ServerAddress)
 	if err := http.ListenAndServe(cfg.ServerAddress, nil); err != nil {
