@@ -6,7 +6,8 @@ import (
 )
 
 func GetUsers(db *sql.DB) ([]models.User, error) {
-	query := "SELECT [Id],[UserName],[CreatedDate],[IsAdmin] FROM [dbo].[Users]"
+	// query := "SELECT [Id],[UserName],[CreatedDate],[IsAdmin] FROM [dbo].[Users]"
+	query := `SELECT "Id", "UserName", "CreatedDate", "IsAdmin" FROM public."Users";`
 	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
@@ -25,7 +26,8 @@ func GetUsers(db *sql.DB) ([]models.User, error) {
 }
 
 func GetUser(username string, db *sql.DB) (*models.User, error) {
-	query := `SELECT [Id],[UserName],[Password],[CreatedDate],[IsAdmin] FROM [dbo].[Users] WHERE UserName = @p1`
+	// query := `SELECT [Id],[UserName],[Password],[CreatedDate],[IsAdmin] FROM [dbo].[Users] WHERE UserName = @p1`
+	query := `SELECT "Id", "UserName", "Password", "CreatedDate", "IsAdmin" FROM public."Users" WHERE "UserName" = $1;`
 	user := new(models.User)
 	err := db.QueryRow(query, username).Scan(&user.UserId, &user.UserName, &user.Password, &user.CreatedDate, &user.IsAdmin)
 	if err != nil {
@@ -40,7 +42,8 @@ func GetUser(username string, db *sql.DB) (*models.User, error) {
 }
 
 func AddUser(user models.User, db *sql.DB) error {
-	query := `INSERT INTO [dbo].[Users] ([UserName],[Password],[IsAdmin]) VALUES (@p1, @p2, @p3)`
+	// query := `INSERT INTO [dbo].[Users] ([UserName],[Password],[IsAdmin]) VALUES (@p1, @p2, @p3)`
+	query := `INSERT INTO public."Users" ("UserName","Password","IsAdmin") VALUES ($1, $2, $3)`
 	_, err := db.Exec(query, user.UserName, user.Password, user.IsAdmin)
 	if err != nil {
 		return err

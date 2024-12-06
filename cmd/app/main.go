@@ -21,7 +21,7 @@ func main() {
 	}
 
 	// Initialize the database
-	dbConn, err := db.NewConnection(cfg.Database)
+	dbConn, err := db.PGConnection(cfg.Database)
 	if err != nil {
 		log.Fatalf("Failed to connect to the database: %v", err)
 	}
