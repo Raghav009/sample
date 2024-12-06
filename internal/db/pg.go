@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -12,7 +13,7 @@ func PGConnection(connString string) (*sql.DB, error) {
 		return nil, fmt.Errorf("connection string is empty")
 	}
 
-	db, err := sql.Open("postgres", connString)
+	db, err := sqlx.Connect("postgres", connString)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +23,7 @@ func PGConnection(connString string) (*sql.DB, error) {
 		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	return db, nil
+	return db.DB, nil
 }
 
 // "host=localhost port=5432 user=postgres password=password dbname=Sample sslmode=disable"
