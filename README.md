@@ -20,3 +20,10 @@ $ del app.exe; go build ./cmd/app; ./app.exe;
 $ Install Rest Client Extension in VScode 
 $ use the sample.http file 
 ```
+
+## Kill Task
+
+```
+$ netstat -ano | findstr port_number
+$ taskkill -f /pid pid_number
+```
