@@ -17,6 +17,11 @@ Authorization: Bearer {{token}}
 
 ###
 
+GET {{baseUrl}}/user/details?username=username
+Authorization: Bearer {{token}}
+
+###
+
 POST {{baseUrl}}/register
 Content-Type: application/json
 
